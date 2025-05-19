@@ -1,0 +1,17 @@
+python-dotenv
+openai==1.66.3 \
+pinecone==6.0.2 \
+pinecone-datasets==1.0.2 \
+pinecone-notebooks==0.1.1 \
+tqdm
+langgraph 
+pinecone-client 
+langchain-pinecone 
+openai 
+groq 
+langchain-openai 
+fastapi 
+uvicorn 
+python-dotenv 
+tiktoken
+
