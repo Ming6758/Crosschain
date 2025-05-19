@@ -128,6 +128,7 @@ query = (
 
 
 
+
 # With custom parameters
 print("\nCustom settings (5 retrievals, 4000 token limit):")
 print(rag(query, retrieval_count=5, token_limit=8000, verbose=True))
