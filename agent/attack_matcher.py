@@ -7,30 +7,22 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def match_attack(state: Dict[str, Any]) -> Dict[str, Any]:
-    # Initialize embeddings - using your preferred approach
-    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
-    
-    # Connect to Pinecone index using your working pattern
-    vectorstore = PineconeVectorStore(
-        index_name="crosschain",
-        embedding=embeddings
-    )
-    
-    # Create search query combining exploit type and details
-    query = f"{state['exploit_type']}: {state['details']}"
-    
-    # Perform similarity search - using same approach as your RAG implementation
-    docs = vectorstore.similarity_search(
-        query=query,
-        k=3  # Number of documents to retrieve
-    )
-    
-    # Format results to include both content and metadata
-    state["matching_attacks"] = [{
-        "content": doc.page_content,
-        "metadata": doc.metadata
-    } for doc in docs]
+embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
+vectorstore = PineconeVectorStore(
+    index_name="crosschain",
+    embedding=embeddings,
+    namespace="exploits"          # optional isolation
+)
 
-    
+def match_attack(state: Dict[str, Any]) -> Dict[str, Any]:
+    query = f"{state.get('exploit_type', '')}: {state['details']}"
+    try:
+        docs = vectorstore.similarity_search(query, k=4)   # 4 for richer context
+    except Exception as e:
+        print(f"Pinecone search failed: {e}")
+        docs = []
+
+    state["matching_attacks"] = [
+        {"content": d.page_content, "metadata": d.metadata} for d in docs
+    ]
     return state
