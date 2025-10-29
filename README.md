@@ -40,3 +40,14 @@ graph TD
     E --> F[Remediation Advisor]
     F --> G[Explainer Agent<br/>Final Report]
     G --> H[Security Team<br/>Slack / Email / Dashboard]
+
+
+
+
+Feature,Description
+Real-time Processing,Async FastAPI + Uvicorn workers for high-throughput
+Multi-Agent Orchestration,"LangGraph for reliable, debuggable workflows"
+LLM Fallback Logic,OpenAI → Groq auto-switch on failure
+Vector Attack Database,Pinecone-powered similarity search over historical exploits
+Production-Ready Logging,"JSON logs, error tracking, processing metadata"
+Extensible Rules Engine,Easy to add new anomaly patterns
