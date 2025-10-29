@@ -23,7 +23,7 @@ async def process_alert(request: Request) -> Dict[str, Any]:
         if "timestamp" not in body:
             body["timestamp"] = int(datetime.now().timestamp())
         
-        # Execute the graph
+        # Execute the graph (LangGraph handles sync/async internally)
         start_time = datetime.now()
         output = graph.invoke(body)
         processing_time = (datetime.now() - start_time).total_seconds()
