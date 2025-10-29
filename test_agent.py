@@ -1,35 +1,38 @@
 # test_agent.py
-import requests
-import json
+import requests, json, time
+from datetime import datetime
 
 TEST_CASES = [
+    # original
     {
         "source": "0x1234...",
         "alertType": "SuspiciousTransfer",
         "details": "High-value dump to CEX via proxy wallet",
-        "timestamp": 1713170000,
+        "timestamp": int(datetime.now().timestamp()),
         "tokenPriceImpact": 0.31,
         "walletHistory": [],
         "chainId": 1,
-        "contractContext": "ERC20.transferFrom(proxyWallet, binance, 1000000)"
+        "contractContext": "ERC20.transferFrom(proxy, binance, 1000000)"
     },
+    # governance
     {
         "source": "0xabcd...",
         "alertType": "GovernanceProposal",
         "details": "Sudden large voting power delegation to new address",
-        "timestamp": 1713171000,
+        "timestamp": int(datetime.now().timestamp()),
         "tokenPriceImpact": 0.05,
-        "walletHistory": [],
+        "walletHistory": [{"note": "recent_creation"}],
         "chainId": 42161,
         "contractContext": "Governance.delegate(newDelegate)"
     },
+    # oracle
     {
         "source": "0xdef0...",
         "alertType": "OracleUpdate",
-        "details": "Sudden price feed deviation detected",
-        "timestamp": 1713172000,
+        "details": "Price feed deviation of 45% in 2 blocks",
+        "timestamp": int(datetime.now().timestamp()),
         "tokenPriceImpact": 0.45,
-        "walletHistory": [{"note": "recent_creation"}],
+        "walletHistory": [],
         "chainId": 1,
         "contractContext": "Oracle.updatePrice(manipulatedValue)"
     },
@@ -37,23 +40,18 @@ TEST_CASES = [
 
 def test_agent():
     url = "http://localhost:8000/process"
-    
-    for test_case in TEST_CASES:
-        print(f"\nTesting case: {test_case['alertType']}")
-        response = requests.post(
-            url,
-            headers={"Content-Type": "application/json"},
-            data=json.dumps(test_case)
-        )
-        
-        if response.status_code == 200:
-            result = response.json()
-            print("\n=== FINAL RESULT ===")
-            print(result.get("final_explanation", "No explanation generated"))
-            print("\n=== PROCESSING METADATA ===")
-            print(result.get("processing_metadata", {}))
+    for i, case in enumerate(TEST_CASES, 1):
+        print(f"\n=== TEST {i}: {case['alertType']} ===")
+        t0 = time.time()
+        r = requests.post(url, json=case, timeout=10)
+        elapsed = time.time() - t0
+        if r.status_code == 200:
+            out = r.json()
+            print("FINAL REPORT:\n", out.get("final_explanation"))
+            print("\nMETADATA:", out.get("processing_metadata"))
+            print(f"Latency: {elapsed:.2f}s")
         else:
-            print(f"Error: {response.status_code} - {response.text}")
+            print(f"ERROR {r.status_code}: {r.text}")
 
 if __name__ == "__main__":
     test_agent()
