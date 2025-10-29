@@ -1,23 +1,16 @@
-fastapi
-uvicorn[standard]
-langgraph
-langchain-pinecone
-langchain-openai
-openai
-groq
-pinecone-client
 python-dotenv
-requests
-``` |
-| `.env.example` | **Add file** → Name: `.env.example` → Paste:  
-```env
-OPENAI_API_KEY=sk-...
-GROQ_API_KEY=...
-PINECONE_API_KEY=...
-``` |
-| `LICENSE` | **Add file** → Name: `LICENSE` → Paste MIT license:  
-[https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT) |
-
----
-
-
+openai==1.66.3 \
+pinecone==6.0.2 \
+pinecone-datasets==1.0.2 \
+pinecone-notebooks==0.1.1 \
+tqdm
+langgraph 
+pinecone-client 
+langchain-pinecone 
+openai 
+groq 
+langchain-openai 
+fastapi 
+uvicorn 
+python-dotenv 
+tiktoken
