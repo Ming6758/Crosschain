@@ -7,7 +7,6 @@ REMEDIATION_MAP = {
     "exit scam": "Freeze treasury multisig, broadcast community alert, pursue legal.",
     "oracle manipulation": "Pause price feeds, switch to backup oracle, validate sources.",
     "token dump": "Monitor CEX inflows, consider temporary trade halt, blacklist wallets.",
-    "bridge exploit":Finland "Halt bridge, audit cross-chain messages, attempt fund recovery.",
     "smart contract vulnerability": "Pause contract, deploy patched version, compensate users.",
 }
 
