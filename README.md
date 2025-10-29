@@ -7,12 +7,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://img.shields.io/badge/Tests-Passing-green)](https://github.com/yourusername/blockchain-security-ai/actions)
 
-A production-ready multi-agent AI system for **real-time detection, classification, and response to blockchain exploits**. Built during my internship, it orchestrates specialized agents using **LangGraph** to monitor Ethereum events, classify threats with LLMs (OpenAI/Groq fallback), match against historical attacks via **Pinecone vector search**, and suggest remediations. Handles fast-moving threats like flash loans, token dumps, and governance attacks with sub-second latency.
+A multi-agent AI system for **real-time detection, classification, and response to blockchain exploits**. Built during my internship, it orchestrates specialized agents using **LangGraph** to monitor real-time events, classify threats with LLMs (OpenAI/Groq fallback), match against historical attacks via **Pinecone vector search**, and suggest remediations. Handles fast-moving threats like flash loans, token dumps, and governance attacks with sub-second latency.
 
-This project demonstrates skills in **AI orchestration**, **vector databases**, **real-time systems**, and **blockchain integration**—perfect for scalable AI engineering roles.
+This project demonstrates skills in **AI orchestration**, **vector databases**, **real-time systems**, and **blockchain integration**.
 
 ## 🎯 Features
-- **Real-Time Monitoring**: Web3.py WebSocket listener for ERC20 transfers (e.g., detects high-value dumps to CEXs like Binance).
 - **Anomaly Detection**: Rules-based (extensible to ML) flagging of suspicious patterns.
 - **Exploit Classification**: LLM-powered categorization (e.g., Flash Loan, Oracle Manipulation) with fallback reliability.
 - **Historical Matching**: Pinecone vector search against a database of real exploits.
