@@ -19,4 +19,3 @@ This project demonstrates skills in **AI orchestration**, **vector databases**, 
 - **Human-Readable Reports**: Summarized incident reports with confidence scores and next steps.
 - **Scalable Architecture**: FastAPI API + LangGraph for async processing; easy to extend to multi-chain.
 
-## 🏗️ Architecture Overview
