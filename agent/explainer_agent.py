@@ -7,62 +7,60 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class ExplainerClient:
+class Explainer:
     def __init__(self):
-        self.openai_client = OpenAI()
-        self.groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-    
-    def explain_with_openai(self, prompt: str) -> str:
-        completion = self.openai_client.chat.completions.create(
-            model="gpt-4",
+        self.openai = OpenAI()
+        self.groq = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+    def _call(self, prompt: str, model: str) -> str:
+        return self.openai.chat.completions.create(
+            model=model,
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.2
-        )
-        return completion.choices[0].message.content.strip()
-    
-    def explain_with_groq(self, prompt: str) -> str:
-        completion = self.groq_client.chat.completions.create(
+            temperature=0.2,
+        ).choices[0].message.content.strip()
+
+    def openai(self, prompt: str) -> str:
+        return self._call(prompt, "gpt-4o")
+
+    def groq(self, prompt: str) -> str:
+        return self.groq.chat.completions.create(
             model="llama3-70b-8192",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.2
-        )
-        return completion.choices[0].message.content.strip()
+            temperature=0.2,
+        ).choices[0].message.content.strip()
 
 def explain_result(state: Dict[str, Any]) -> Dict[str, Any]:
-    client = ExplainerClient()
-    
-    # Format matching attacks for display
-    matched_attacks = "\n".join(
-        f"- {attack['content'][:100]}... (Source: {attack['metadata'].get('source', 'unknown')})"
-        for attack in state["matching_attacks"]
-    ) if state.get("matching_attacks") else "No similar attacks found in database"
-    
+    client = Explainer()
+
+    matches = "\n".join(
+        f"- {a['content'][:120]}… (src: {a['metadata'].get('source','?')})"
+        for a in state.get("matching_attacks", [])
+    ) or "No historical matches."
+
     prompt = f"""
-    Prepare a security incident report for a blockchain security team:
-    
-    === INCIDENT DETAILS ===
-    Chain: {state.get('chainId', 'Unknown')}
-    Alert Type: {state.get('alertType', 'Unknown')}
-    Exploit Classification: {state.get('exploit_type', 'Unknown')}
-    
-    === MATCHING HISTORICAL ATTACKS ===
-    {matched_attacks}
-    
-    === RECOMMENDED ACTIONS ===
-    {state.get('remediation', 'No specific recommendation')}
-    
-    Please provide:
-    1. A concise summary of the incident
-    2. Confidence level in the classification (High/Medium/Low)
-    3. Immediate next steps
-    4. Long-term mitigation suggestions
-    """
-    
-    # Try OpenAI first, fallback to Groq
+Write a **concise security incident report** (max 5 sentences) for the on-call team:
+
+Chain: {state.get('chainId')}
+Alert: {state.get('alertType')}
+Classification: {state.get('exploit_type')}
+Confidence: {'High' if state.get('anomaly') else 'Medium'}
+
+Historical matches:
+{matches}
+
+Recommended action:
+{state.get('remediation')}
+
+Provide:
+1. One-sentence summary
+2. Confidence (High/Medium/Low)
+3. Immediate next step
+4. Long-term mitigation
+"""
+
     try:
-        state["final_explanation"] = client.explain_with_openai(prompt)
+        state["final_explanation"] = client.openai(prompt)
     except Exception as e:
-        print(f"OpenAI failed, falling back to Groq: {str(e)}")
-        state["final_explanation"] = client.explain_with_groq(prompt)
-    
+        print(f"OpenAI explainer failed → Groq: {e}")
+        state["final_explanation"] = client.groq(prompt)
     return state
