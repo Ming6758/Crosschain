@@ -7,7 +7,7 @@
 [![Pinecone](https://img.shields.io/badge/Pinecone-Vector%20DB-purple)](https://pinecone.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Detect, classify, and respond to blockchain exploits in under 1 second** using a multi-agent AI pipeline powered by LLMs, vector search, and event-driven architecture.
+> **Detect, classify, and respond to blockchain exploits in under 30 second** using a multi-agent AI pipeline powered by LLMs, vector search, and event-driven architecture.
 
 ---
 
