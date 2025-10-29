@@ -1,21 +1,42 @@
-# Real-Time Blockchain Security AI: Multi-Agent Exploit Detector
+# Blockchain Exploit Detector  
+### Real-time AI-powered threat detection & automated response for DeFi and Web3
 
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104%2B-brightgreen)](https://fastapi.tiangolo.com/)
-[![LangGraph](https://img.shields.io/badge/LangGraph-0.1%2B-orange)](https://langchain-ai.github.io/langgraph/)
-[![Pinecone](https://img.shields.io/badge/Pinecone-Vector-DB-purple)](https://www.pinecone.io/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-green)](https://fastapi.tiangolo.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-orange)](https://langchain-ai.github.io/langgraph/)
+[![Pinecone](https://img.shields.io/badge/Pinecone-Vector%20DB-purple)](https://pinecone.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/Tests-Passing-green)](https://github.com/yourusername/blockchain-security-ai/actions)
 
-A multi-agent AI system for **real-time detection, classification, and response to blockchain exploits**. Built during my internship, it orchestrates specialized agents using **LangGraph** to monitor real-time events, classify threats with LLMs (OpenAI/Groq fallback), match against historical attacks via **Pinecone vector search**, and suggest remediations. Handles fast-moving threats like flash loans, token dumps, and governance attacks with sub-second latency.
+> **Detect, classify, and respond to blockchain exploits in under 1 second** using a multi-agent AI pipeline powered by LLMs, vector search, and event-driven architecture.
 
-This project demonstrates skills in **AI orchestration**, **vector databases**, **real-time systems**, and **blockchain integration**.
+---
 
-## 🎯 Features
-- **Anomaly Detection**: Rules-based (extensible to ML) flagging of suspicious patterns.
-- **Exploit Classification**: LLM-powered categorization (e.g., Flash Loan, Oracle Manipulation) with fallback reliability.
-- **Historical Matching**: Pinecone vector search against a database of real exploits.
-- **Remediation Advice**: Actionable recommendations like pausing contracts or alerting DAOs.
-- **Human-Readable Reports**: Summarized incident reports with confidence scores and next steps.
-- **Scalable Architecture**: FastAPI API + LangGraph for async processing; easy to extend to multi-chain.
+## The Problem
 
+Blockchain exploits happen **fast** — flash loans, governance attacks, and token dumps can drain millions in minutes.  
+Traditional security tools are **slow, manual, and reactive**.
+
+---
+
+## The Solution: Real-Time AI Security Agent
+
+A **multi-agent AI system** that:
+1. **Detects anomalies** in real time (high-value transfers, price impact, new wallets)
+2. **Classifies exploit type** using LLMs (OpenAI + Groq fallback)
+3. **Matches against known attacks** via Pinecone vector similarity
+4. **Recommends immediate remediation** (pause contract, freeze multisig, etc.)
+5. **Generates human-readable incident reports** for security teams
+
+---
+
+## System Architecture
+
+```mermaid
+graph TD
+    A[Blockchain Event / Webhook] --> B[FastAPI /process]
+    B --> C{Anomaly Detector}
+    C -->|Suspicious| D[Exploit Classifier<br/>GPT-4o → Groq]
+    D --> E[Attack Matcher<br/>Pinecone + OpenAI Embeddings]
+    E --> F[Remediation Advisor]
+    F --> G[Explainer Agent<br/>Final Report]
+    G --> H[Security Team<br/>Slack / Email / Dashboard]
