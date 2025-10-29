@@ -20,4 +20,4 @@ PINECONE_API_KEY=...
 
 ---
 
-### Final Check: Your Repo Should Look Like This
+
